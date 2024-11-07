@@ -7,6 +7,8 @@ import { useAuth } from "@clerk/nextjs";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const font = Montserrat({
     weight: '600',
@@ -15,6 +17,18 @@ const font = Montserrat({
 
 export const LandingNavbar = () => {
     const { isSignedIn } = useAuth();
+    const router = useRouter();
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (isMounted && isSignedIn) {
+            router.push('/dashboard');
+        }
+    }, [isMounted, isSignedIn, router]);
 
     return (
         <nav className="p-4 bg-transparent flex items-center justify-between">
