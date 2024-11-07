@@ -11,7 +11,7 @@ import { UserSubscriptionContext } from '@/app/(context)/userSubscriptionContext
 import Script from 'next/script'
 import { CircleCheckBig } from 'lucide-react'
 
-const billing = () => {
+const Billing = () => {
     const { user } = useUser();
     const Amount = 100;
     const [loading, setLoading] = useState(false);
@@ -144,4 +144,4 @@ const billing = () => {
     )
 }
 
-export default billing
+export default Billing

@@ -26,22 +26,32 @@ const FormSection = ({ selectedTemplate, userFormInput, loading }: PROPS) => {
     }
     return (
         <div className={cn("p-5 shadow-md border rounded-lg bg-white")}>
-            <Image src={selectedTemplate?.icon} alt='icon' height={70} width={70} />
+            {selectedTemplate?.icon ? (
+                <Image
+                    src={selectedTemplate.icon}
+                    alt='icon'
+                    height={70}
+                    width={70}
+                />
+            ) : (
+                <span>No Icon Available</span>  // Placeholder or fallback component
+            )}
             <h2 className='font-bold text-2xl mb-2 text-purple-600'>{selectedTemplate?.name}</h2>
             <p className="text-gray-500 text-sm">{selectedTemplate?.desc}</p>
             <form className='mt-6' onSubmit={handleSubmit}>
                 {selectedTemplate?.form?.map((item, index) => (
-                    <div className='my-2 flex flex-col gap-2 mb-7'>
+                    <div key={item.label + '-' + index} className="my-2 flex flex-col gap-2 mb-7">
                         <label className='font-bold' htmlFor={item.label}>{item?.label}</label>
                         {
                             item.field == 'input' ? <Input name={item.name} required={item?.required} onChange={handleInputChange} />
                                 : item.field == 'textarea' ? <Textarea name={item.name} required={item?.required} onChange={handleInputChange} /> : null
                         }
                     </div>
-                ))}
+                ))
+                }
                 <Button className='py-6 w-full bg-purple-600' disabled={loading}>{loading && <Loader2Icon className='animate-spin' />}Generate Content</Button>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 

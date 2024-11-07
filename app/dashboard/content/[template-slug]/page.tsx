@@ -15,14 +15,14 @@ import moment from 'moment'
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext'
 import { useRouter } from 'next/navigation'
 import { UserSubscriptionContext } from '@/app/(context)/userSubscriptionContext'
-import { UpdateCreditUsageContext } from '@/app/(context)/updateCreditUsageContext'
+import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext'
 
 interface PROPS {
     params: {
         'template-slug': string
     }
 }
-const createNewContent = (props: PROPS) => {
+const CreateNewContent = (props: PROPS) => {
     const selectedTemplate: TEMPLATE | undefined = Templates?.find((item) => item.slug == props.params['template-slug']);
     const [loading, setLoading] = useState(false);
     const [aiOutput, setAiOutput] = useState<string>('');
@@ -80,4 +80,4 @@ const createNewContent = (props: PROPS) => {
     )
 }
 
-export default createNewContent
+export default CreateNewContent

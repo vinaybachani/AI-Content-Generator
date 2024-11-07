@@ -21,23 +21,26 @@ import { Copy } from 'lucide-react'
 export interface HISTORY {
     id: Number,
     formData: string,
-    aiResponse: string,
+    aiResponse: string | null,
     templateSlug: string,
-    createdBy: string,
-    createdAt: string
+    createdBy: string | null,
+    createdAt: string | null,
 }
 
-const historyPage = () => {
+const HistoryPage = () => {
     const { user } = useUser();
-    const [historyData, setHistoryData] = useState<any>();
+    const [historyData, setHistoryData] = useState<HISTORY[] | undefined>(undefined);
     const GetData = async () => {
-        if (user) {
-            const result: HISTORY = await db.select().from(AIOutput).where(eq(AIOutput.createdBy, user?.primaryEmailAddress?.emailAddress));
+        if (user?.primaryEmailAddress?.emailAddress) {
+            const result: HISTORY[] = await db.select().from(AIOutput).where(eq(AIOutput.createdBy, user?.primaryEmailAddress?.emailAddress));
             setHistoryData(result);
         }
     }
 
-    const handleCopy = (aiResponse) => {
+    const handleCopy = (aiResponse: string | null) => {
+        if (aiResponse === null) {
+            aiResponse = '';
+        }
         navigator.clipboard.writeText(aiResponse);
         toast.success('Content Copied to Clipboard');
     }
@@ -75,7 +78,7 @@ const historyPage = () => {
                                 historyData.map(data => {
                                     const template = findTemplate(data?.templateSlug);
                                     return (
-                                        <TableRow key={data.id}>
+                                        <TableRow key={data?.id?.toString()}>
                                             <TableCell className="flex items-center">
                                                 {template && template.icon ? (
                                                     <img src={template.icon} alt={template.name} className="w-6 h-6 mr-2" />
@@ -84,7 +87,7 @@ const historyPage = () => {
                                             </TableCell>
                                             <TableCell className="truncate max-w-[300px]">{data.aiResponse}</TableCell>
                                             <TableCell>{data.createdAt}</TableCell>
-                                            <TableCell>{data.aiResponse.length}</TableCell>
+                                            <TableCell>{data.aiResponse?.length}</TableCell>
                                             <TableCell><Button className='flex gap-2 bg-purple-600' onClick={() => handleCopy(data.aiResponse)}><Copy className='h-4 w-4' />Copy</Button></TableCell>
                                         </TableRow>
                                     )
@@ -104,4 +107,4 @@ const historyPage = () => {
     )
 }
 
-export default historyPage
+export default HistoryPage

@@ -4,7 +4,7 @@ import SideNav from "./_components/SideNav";
 import Header from "./_components/Header";
 import { TotalUsageContext } from "../(context)/TotalUsageContext";
 import { UserSubscriptionContext } from "../(context)/userSubscriptionContext";
-import { UpdateCreditUsageContext } from "../(context)/updateCreditUsageContext";
+import { UpdateCreditUsageContext } from "../(context)/UpdateCreditUsageContext";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 

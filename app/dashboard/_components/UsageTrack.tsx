@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm'
 import { HISTORY } from '../history/page'
 import { TotalUsageContext } from '@/app/(context)/TotalUsageContext'
 import { UserSubscriptionContext } from '@/app/(context)/userSubscriptionContext'
-import { UpdateCreditUsageContext } from '@/app/(context)/updateCreditUsageContext'
+import { UpdateCreditUsageContext } from '@/app/(context)/UpdateCreditUsageContext'
 
 const UsageTrack = () => {
     const { user } = useUser();
@@ -27,16 +27,20 @@ const UsageTrack = () => {
     }, [updateCreditUsage && user])
 
     const getData = async () => {
-        const result: HISTORY[] = await db.select().from(AIOutput).where(eq(AIOutput.createdBy, user?.primaryEmailAddress?.emailAddress));
-        getTotalUsage(result);
+        if (user?.primaryEmailAddress?.emailAddress) {
+            const result: HISTORY[] = await db.select().from(AIOutput).where(eq(AIOutput.createdBy, user?.primaryEmailAddress?.emailAddress));
+            getTotalUsage(result);
+        }
     }
 
     const isUserSubscriber = async () => {
-        const result = await db.select().from(UserSubscription).where(eq(UserSubscription.email, user?.primaryEmailAddress?.emailAddress));
+        if (user?.primaryEmailAddress?.emailAddress) {
+            const result = await db.select().from(UserSubscription).where(eq(UserSubscription.email, user?.primaryEmailAddress?.emailAddress));
 
-        if (result) {
-            setUserSubscription(true);
-            setMaxWords(100000);
+            if (result) {
+                setUserSubscription(true);
+                setMaxWords(100000);
+            }
         }
     }
 
