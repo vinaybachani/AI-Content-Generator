@@ -33,6 +33,7 @@ const OutputSection = ({ aiOutput }: props) => {
                 initialEditType="wysiwyg"
                 useCommandShortcut={true}
                 onChange={() => console.log(editorRef.current.getInstance().getMarkdown())}
+                readOnly={true}
             />
         </div>
     )
